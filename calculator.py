@@ -1,5 +1,5 @@
 #Hesap Makinesi-Calculator
-#Run on İnterpreter-Bir interpreterde Çalıştırın
+
 
 def topla(x, y):
     return x + y
