@@ -1,5 +1,5 @@
 #Alan ve Hacim Hesaplayıcı - Area and Volume Calculator 
-#Run on İnterpreter
+
 pi=3.141592
 dil=input("Türkçe İçin 1- For English 2")
 if dil=="1":
