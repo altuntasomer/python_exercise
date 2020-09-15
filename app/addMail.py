@@ -1,4 +1,4 @@
-
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 senderMailAddresses = list()
@@ -7,8 +7,22 @@ receiverNames = list()
 receiverMailAddresses = list()
 senderIndex = 0
 receiverIndex = 0
-smtpp = ["@yandex","@gmail","@outlook;@hotmail;@msn;.edu"]# 
+smtpp = ["@yandex","@gmail","@outlook;@hotmail;@msn;.edu"]#
 smtps = ["smtp.yandex.com","smtp.gmail.com","smtp.office365.com"]
+#----------------------------------------------------------------------------------------------------------------------#
+language = None
+sender_text_lan = ["Gönderici","Sender"]
+receiver_text_lan = ["Alıcı","Receiver"]
+pushbutton_add_text_lan = ["Kaydet (F8)","Save (F8)"]
+entersender_text_lan = ["Gönderici Mail Adresi Giriniz","Enter the Sender Mail Address"]
+entersenderpass_text_lan = ["Şifrenizi Giriniz","Enter the Password"]
+enterreceiver_text_lan = ["Alıcı Mail Adresi Giriniz","Enter the Receiver Mail Address"]
+enterreceivername_text_lan = ["Alıcı İsmi Giriniz","Enter the Receiver Name"]
+incorrectmail_text_lan = ["Geçersiz Mail Adresi","Incorrect Mail Address"]
+savesuccessfully_text_lan = ["Başarıyla Kaydedildi","Saved Successfully"]
+
+
+
 #----------------------------------------------------------------------------------------------------------------------#
 # Save mail addresses to File
 def writeToFile(type,txt1,txt2):
@@ -41,8 +55,10 @@ def readFromFile():
             receiverMailAddresses.append(i.split(";")[0])
             receiverNames.append(i.split(";")[1])
     except Exception as a:
-        print(a)
+        pass
 #----------------------------------------------------------------------------------------------------------------------#
+
+
 class Ui_MainWindow_addmailadress(object):
     def setupUi(self, MainWindow_addmailadress):
         MainWindow_addmailadress.setObjectName("MainWindow_addmailadress")
@@ -108,6 +124,7 @@ class Ui_MainWindow_addmailadress(object):
         self.label_2.setObjectName("label_2")
         self.verticalLayout.addWidget(self.label_2)
         self.lineEdit_2 = QtWidgets.QLineEdit(self.verticalLayoutWidget)
+        self.lineEdit_2.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.verticalLayout.addWidget(self.lineEdit_2)
         self.pushButton = QtWidgets.QPushButton(self.verticalLayoutWidget)
@@ -129,23 +146,24 @@ class Ui_MainWindow_addmailadress(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow_addmailadress.setStatusBar(self.statusbar)
 
-
         self.retranslateUi(MainWindow_addmailadress)
         QtCore.QMetaObject.connectSlotsByName(MainWindow_addmailadress)
 
-        # -------------------------------------------------------------------------------------------------------------#
         self.radioButton_sender.toggled.connect(self.toggled)
         self.radioButton_Receiver.toggled.connect(self.toggled2)
         self.pushButton.clicked.connect(self.save)
 
+        self.pushButton.setShortcut('F8')
+
     def retranslateUi(self, MainWindow_addmailadress):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow_addmailadress.setWindowTitle(_translate("MainWindow_addmailadress", "Add Mail Address"))
-        self.radioButton_sender.setText(_translate("MainWindow_addmailadress", "SENDER"))
-        self.radioButton_Receiver.setText(_translate("MainWindow_addmailadress", "RECEIVER"))
-        self.label_1.setText(_translate("MainWindow_addmailadress", "Enter the Sender Mail Address"))
-        self.label_2.setText(_translate("MainWindow_addmailadress", "Enter the Password"))
-        self.pushButton.setText(_translate("MainWindow_addmailadress", "SAVE"))
+        MainWindow_addmailadress.setWindowTitle(_translate("MainWindow_addmailadress", "Stork 1.0.0   SimpleAppsInc"))
+        self.radioButton_sender.setText(_translate("MainWindow_addmailadress",sender_text_lan[language]))
+        self.radioButton_Receiver.setText(_translate("MainWindow_addmailadress",receiver_text_lan[language]))
+        self.label_1.setText(_translate("MainWindow_addmailadress", entersender_text_lan[language]))
+        self.label_2.setText(_translate("MainWindow_addmailadress", entersenderpass_text_lan[language]))
+        self.pushButton.setText(_translate("MainWindow_addmailadress", pushbutton_add_text_lan[language]))
+
 #----------------------------------------------------------------------------------------------------------------------#
     # Saving the mail addresses and passwords or names to file
     def save(self):
@@ -153,10 +171,10 @@ class Ui_MainWindow_addmailadress(object):
             address = self.lineEdit_1.text()
 
             if not '@' in address:
-                self.pushButton.setText("MAIL ADDRESS IS INCORRECT")
+                self.pushButton.setText(incorrectmail_text_lan[language])
                 return
             if len(address) < 5:
-                self.pushButton.setText()("MAIL ADDRESS IS INCORRECT")
+                self.pushButton.setText()(incorrectmail_text_lan[language])
                 return
 
 
@@ -170,20 +188,24 @@ class Ui_MainWindow_addmailadress(object):
 
                 name = self.lineEdit_2.text()
                 writeToFile('r',address,name)
-            self.pushButton.setText("SAVED SUCCESSFULLY")
+            self.pushButton.setText(savesuccessfully_text_lan[language])
 
         except Exception as aaa:
             pass
 #----------------------------------------------------------------------------------------------------------------------#
     # When Selected the radiobuttons
     def toggled(self):
-        self.label_1.setText("Enter the Sender Mail Address")
-        self.label_2.setText("Enter the Password")
+        self.label_1.setText(entersender_text_lan[language])
+        self.label_2.setText(entersenderpass_text_lan[language])
+        self.lineEdit_2.EchoMode(QtWidgets.QLineEdit.Password)
 
     def toggled2(self):
-        self.label_1.setText("Enter the Receiver Mail Address")
-        self.label_2.setText("Enter the Name of Receiver")
+        self.label_1.setText(enterreceiver_text_lan[language])
+        self.label_2.setText(enterreceivername_text_lan[language])
+        self.lineEdit_2.EchoMode(QtWidgets.QLineEdit.NoEcho)
+
 #----------------------------------------------------------------------------------------------------------------------#
+
 
 if __name__ == "__main__":
     import sys
